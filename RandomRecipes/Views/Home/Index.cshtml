@@ -1,0 +1,51 @@
+﻿@using RandomRecipes.Models;
+@using RandomRecipes.Models
+@*@model IEnumerable<Recipe>*@
+
+@{
+    IEnumerable<Recipe> recipes = Model.Recipes;
+    IEnumerable<RecipeIngredient> ingredients = Model.RecipeIngredients;
+    IEnumerable<RecipeStep> steps = Model.RecipeSteps;
+
+
+    ViewBag.Title = "Random Recipe Generator";
+    Random ran = new Random();
+    var element = ran.Next(0, recipes.Count());
+
+    var recipeName = recipes.ElementAt(element).Name;
+    var recipeID = recipes.ElementAt(element).ID;
+    var recipeSteps = steps.Where(s => s.Recipe1.ID == recipeID);
+    var recipeIngredients = ingredients.Where(s => s.Recipe1.ID == recipeID);
+
+
+}
+
+<h2>Random Recipe Generator</h2>
+<div id="test">
+
+<h3>@recipeName</h3>
+
+<p>Ingredients:</p>
+    @{ 
+        foreach (var s in recipeIngredients) {
+                <p>@s.quantity  of @s.ingredient</p>
+
+            }
+        }
+
+
+
+<p>Steps:</p>
+
+@{ 
+    foreach(var s in recipeSteps)
+    {
+        <p>@s.Step</p>
+    }
+}
+
+
+
+<button class="carousel" onclick="location.href='@Url.Action("Index", "Home")'">Random!</button>
+
+</div>
